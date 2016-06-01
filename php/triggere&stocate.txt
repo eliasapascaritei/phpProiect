@@ -1,0 +1,76 @@
+
+STOCATE
+------------------------------------------
+
+create or replace function add_oferta_elias_pr(add_destinatia varchar, add_zile int, add_locuri int, add_transport varchar, add_data1 date, add_data2 date,add_hotel1 varchar, add_hotel2 varchar, add_pret1 float, add_pret2 float) returns bool AS '
+begin
+Insert into oferta_elias_pr(destinatia,nr_zile,nr_locuri,transport,data1,data2,hotel1,hotel2) values(add_destinatia, add_zile, add_locuri, add_transport, add_data1, add_data2,add_hotel1, add_hotel2);
+
+insert into pret_elias_pr values ((select cod_oferta from oferta_elias_pr where destinatia=add_destinatia and data1=add_data1),add_pret1,add_pret2);
+
+return true;
+end;
+'LANGUAGE plpgsql;
+
+
+
+create or replace function add_client_elias_pr(add_cnp varchar, add_nume varchar, add_prenume varchar, add_adresa varchar, add_telefon varchar, add_email varchar) returns bool AS '
+begin
+
+insert into client_elias_pr values(add_cnp,add_nume,add_prenume,add_adresa,add_telefon,add_email);
+
+return true;
+end;
+'LANGUAGE plpgsql;
+
+TRIGGERE
+--------------------------------------------
+
+CREATE OR REPLACE FUNCTION modif_oferta_elias_pr() RETURNS TRIGGER AS '
+
+declare
+nrloc int;
+
+    BEGIN
+        IF(TG_OP = 'DELETE') THEN
+nrloc= (select nr_locuri from oferta_elias_pr where cod_oferta=old.cod_oferta)+OLD.nr_persoane;
+	
+        UPDATE oferta_elias_pr set nr_locuri=nrloc where cod_oferta=old.cod_oferta;
+
+	ELSIF (TG_OP = 'INSERT') THEn
+nrloc= (select nr_locuri from oferta_elias_pr where cod_oferta=new.cod_oferta)-new.nr_persoane;
+
+        UPDATE oferta_elias_pr set nr_locuri=nrloc where cod_oferta=new.cod_oferta;
+
+        END IF;
+return null;
+end
+
+'LANGUAGE plpgsql; 
+
+CREATE TRIGGER modificare_oferta_elias
+AFTER INSERT OR DELETE ON rezervare_elias_pr
+    FOR EACH ROW EXECUTE PROCEDURE modif_oferta_elias_pr();
+
+
+
+
+CREATE OR REPLACE FUNCTION sterge_oferta_elias_pr() RETURNS TRIGGER AS '
+
+declare
+nrloc int;
+
+    BEGIN
+        IF(TG_OP = 'DELETE') THEN
+	
+        delete from pret_elias_pr where cod_oferta=old.cod_oferta;
+
+        END IF;
+return null;
+end
+
+'LANGUAGE plpgsql; 
+
+CREATE TRIGGER stergere_oferta_elias
+AFTER DELETE ON oferta_elias_pr
+    FOR EACH ROW EXECUTE PROCEDURE sterge_oferta_elias_pr();

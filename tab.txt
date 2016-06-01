@@ -1,0 +1,5 @@
+client_elias_pr
+admin_elias_pr   user:Elias  pass;adminElias
+oferta_elias_pr
+pret_elias_pr
+rezervare_elias_pr
