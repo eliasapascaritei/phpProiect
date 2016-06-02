@@ -1,10 +1,15 @@
 <html>
 <head>
 <title>Agentie de voiaj</title>
+<style>
+body {
+	background-color: lightgrey
+}
+</style>
 </head>
 <body>
  <div align="left">
-<background="php/img.jpg">
+
   		<h2>Optiuni</h2>
 
 
