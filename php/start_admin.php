@@ -1,3 +1,8 @@
+<style>
+body {
+	background-image: url("travel.jpg")
+}
+</style>
 <?
 session_start();
 if(!isset($_GET["logout"]))

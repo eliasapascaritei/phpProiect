@@ -1,3 +1,8 @@
+<style>
+body {
+	background-image: url("travel.jpg")
+}
+</style>
 <?php
 session_start();
 if(isset($_SESSION["ok"]))

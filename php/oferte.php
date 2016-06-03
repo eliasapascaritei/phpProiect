@@ -5,6 +5,11 @@
 <html>
 <Head>
 <title>Oferte</title>
+<style>
+body {
+	background-image: url("travel.jpg")
+}
+</style>
 </head>
 <body>
  <div class="wrap">

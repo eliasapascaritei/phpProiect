@@ -1,3 +1,8 @@
+<style>
+body {
+	background-image: url("travel.jpg")
+}
+</style>
 <?php
 ob_start();
 require('interog.inc');
